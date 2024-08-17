@@ -391,4 +391,10 @@
     "parent": 'tileset_all',
     "name": 'Deadworld Logo'
   };
+  _BLUEPRINTS.TILESETS.sheet_clickyclacky = {
+    "filename": 'PNG_FullSpriteSheet.png',
+    "blockSize": 1,
+    "parent": 'tileset_all',
+    "name": 'Clicky Clack Sheet'
+  };
 })();

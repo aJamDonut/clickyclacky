@@ -1169,6 +1169,21 @@
     "parent": 'component_stages',
     "name": 'Test utility'
   };
+  _BLUEPRINTS.COMPONENTS.game_clicky_clacky = {
+    "getElement": function () {
+      const redBar = game.render.component('hud_clicky_redbar');
+      const viewport = game.render.component('hud_clicky_grid_viewport', {
+        redBar
+      });
+      const stage = new UIContainer();
+      stage.addChild(viewport);
+      stage.addChild(redBar);
+      redBar.setValue(50);
+      return stage;
+    },
+    "parent": 'component_stages',
+    "name": 'Clicky Clacky'
+  };
   _BLUEPRINTS.COMPONENTS.component_notification = {
     "options": '\'text\'',
     "getElement": function (options) {
@@ -8607,11 +8622,11 @@
       options.w = options.w || 339;
       options.h = options.h || 490;
       const tabNames = ['Face', 'Head', 'Mouths', 'Eyes', 'All'];
-      const bodies = ["body_camo", "body_smoker", "body_medical", "body_clonejacket", "body_naked", "body_rags", "body_poncho", "body_sin_1", "body_gray", "body_platemail", "body_clonejacket2", "body_tunic_2", "body_tunic_1", "body_cloneshirt", "body_composite_chestpiece", "body_composite_armour", "body_cloneshirt2", "body_sultan", "body_black_smoker", "body_tommysteel_tattoo", "body_wooden_chestpiece", "body_wooden_armour", "body_gi_orange", "body_gi_plain", "body_compliance_vest", "body_dress_bertha_red", "body_armor_fenec_red", "body_nano_armor", "body_nano_armor_2", "body_nano_armor_3", "body_west_cloneshirt", "body_east_cloneshirt", "body_westside_G", "body_syndicate", "body_office", "blank"];
+      const bodies = ["body_magician", "body_camo", "body_smoker", "body_medical", "body_clonejacket", "body_naked", "body_rags", "body_poncho", "body_sin_1", "body_gray", "body_platemail", "body_redmage", "body_cape_and_waist", "body_clonejacket2", "body_tunic_2", "body_tunic_1", "body_cloneshirt", "body_composite_chestpiece", "body_composite_armour", "body_cloneshirt2", "body_sultan", "body_black_smoker", "body_tommysteel_tattoo", "body_wooden_chestpiece", "body_wooden_armour", "body_gi_orange", "body_gi_plain", "body_compliance_vest", "body_dress_bertha_red", "body_armor_fenec_red", "body_nano_armor", "body_nano_armor_2", "body_nano_armor_3", "body_west_cloneshirt", "body_east_cloneshirt", "body_westside_G", "body_syndicate", "body_office", "blank"];
       const eyes = ["mask_steamglasses", "mask_deathspawneye", "mask_eyescanner", "icon_eye_open", "icon_eye_closed", "mask_sunglasses"];
       const mouths = ["sprite_talk_grr", "sprite_talk_raar", "sprite_talk_mmm", "sprite_talk_ohh", "sprite_talk_blergh", "sprite_talk_bwah", "sprite_chomp_4", "sprite_chomp_3", "sprite_chomp_2", "sprite_chomp_1"];
-      const heads = ["head_naked", "mask_alexhead", "mask_spherehead", "mask_lokal", "sprite_tommy_steel_mask", "sprite_syndicate_mask", "sprite_skinbothead2", "mask_staff", "mask_robothead", "mask_throwbackmask"];
-      const hats = ["mask_farmerhat", "mask_bandit_hatmask", "mask_deathspawn", "sprite_santamask", "sprite_turkey_mask", "sprite_head_punk_yellow", "sprite_head_punk_orange", "sprite_head_punk_purple", "sprite_head_punk_green", "mask_happymask", "mask_rancher", "mask_bandana", "mask_plainmask"];
+      const heads = ["head_standard", "head_naked", "mask_alexhead", "mask_spherehead", "mask_lokal", "mask_purp", "mask_gambler", "sprite_tommy_steel_mask", "sprite_syndicate_mask", "sprite_skinbothead2", "mask_staff", "mask_robothead", "mask_throwbackmask"];
+      const hats = ["mask_farmerhat", "mask_bandit_hatmask", "mask_deathspawn", "sprite_santamask", "sprite_turkey_mask", "sprite_head_punk_yellow", "sprite_head_punk_orange", "sprite_head_punk_purple", "sprite_head_punk_green", "mask_happymask", "mask_rancher", "mask_bandana", "mask_plainmask", "mask_hat_magician"];
       const anims = [{
         name: 'Down',
         anim: 'util/point_right'
@@ -8651,6 +8666,7 @@
       layersPanel.x = options.w + 250;
       layersPanel.y = 10;
       container.addChild(layersPanel);
+      layersPanel.keep = false;
       const layers = [];
       const updateLayersPanel = () => {
         layersPanel.removeChildren();
@@ -8927,10 +8943,11 @@
           });
           if (lChild.visible) {
             dummy.y = dummyOrig;
+            dummy.scale.set(1);
           } else {
-            dummy.y = 100;
+            dummy.y = 170;
+            dummy.scale.set(3);
           }
-          layer.visible = false;
         }
       });
       dummy.colorTint = "#ffffff";
@@ -8938,6 +8955,201 @@
     },
     "parent": 'component_huds',
     "name": 'HUD Voice Actor'
+  };
+  _BLUEPRINTS.COMPONENTS.hud_clicky_grid = {
+    "getElement": function (options) {
+      if (options) {
+        options = {};
+      }
+      const blockWidth = 100;
+      const blockHeight = 100;
+      const gridWidth = 10;
+      const padding = 0;
+      const pane = new UIContainer();
+      function createBlock() {
+        const block = game.render.component('composite_clicky_block');
+        block.visible = false;
+        return block;
+      }
+      const blocks = [];
+      for (let i = 0; i < gridWidth; i++) {
+        blocks[i] = [];
+        for (let j = 0; j < gridWidth; j++) {
+          const block = createBlock();
+          block.x = i * (blockWidth + padding);
+          block.y = j * (blockHeight + padding);
+          pane.addChild(block);
+          blocks[i].push(block);
+        }
+      }
+      const clickyGame = {
+        startTop: Math.ceil(gridWidth / 2),
+        startLeft: Math.ceil(gridWidth / 2),
+        top: 0,
+        left: 0,
+        redLights: 0,
+        greenLights: 0,
+        blockReset: function () {},
+        nextSlot: function () {
+          const slot = findFreeSlot();
+          if (!slot) {
+            return this.gameOver();
+          }
+          pane.activate(slot.top, slot.left);
+        },
+        gameOver: function () {}
+      };
+      window.clickyGame = clickyGame;
+      pane.activate = function (top, left) {
+        clickyGame.greenLights++;
+        clickyGame.top = top;
+        clickyGame.left = left;
+        blocks[top][left].visible = true;
+      };
+      function findFreeSlot() {
+        let top = clickyGame.top;
+        let left = clickyGame.left;
+        if (game.rng(0, 1) == 1) {
+          top++;
+        } else if (game.rng(0, 1) == 1) {
+          top--;
+        } else if (game.rng(0, 1) == 1) {
+          left--;
+        } else if (game.rng(0, 1) == 1) {
+          left++;
+        }
+        if (blocks[top] && blocks[top][left] && !blocks[top][left].visible) {
+          return {
+            top: top,
+            left: left
+          };
+        }
+        for (let i = 0; i < blocks.length; i++) {
+          for (let j = 0; j < blocks[i].length; j++) {
+            const cell = blocks[i][j];
+            if (!cell.visible) {
+              if (isActive(i + 1, j) || isActive(i - 1, j) || isActive(i, j + 1) || isActive(i, j + 1)) {
+                return {
+                  top: i,
+                  left: j
+                };
+              } else {}
+            }
+          }
+        }
+        return false;
+      }
+      function isHidden(top, left) {
+        if (!blocks[top]) {
+          return false;
+        }
+        if (!blocks[top][left]) {
+          return false;
+        }
+        if (typeof blocks[top][left].visible === "undefined") {
+          return false;
+        }
+        if (!blocks[top][left].visible) {
+          return true;
+        }
+        return false;
+      }
+      function isActive(top, left) {
+        if (!blocks[top]) {
+          return false;
+        }
+        if (!blocks[top][left]) {
+          return false;
+        }
+        if (typeof blocks[top][left].visible === "undefined") {
+          return false;
+        }
+        if (blocks[top][left].visible) {
+          return true;
+        }
+        return false;
+      }
+      pane.activate(clickyGame.startTop, clickyGame.startLeft);
+      window.lightOn = window.lightOn || function () {
+        clickyGame.greenLights++;
+        clickyGame.redLights--;
+        if (clickyGame.redLights === 0) {
+          clickyGame.nextSlot();
+        }
+      };
+      window.lightOff = window.lightOff || function () {
+        clickyGame.greenLights--;
+        clickyGame.redLights++;
+      };
+      game.ee.off("clicky-light-off", window.lightOff);
+      game.ee.off("clicky-light-on", window.lightOn);
+      game.ee.on("clicky-light-off", window.lightOff);
+      game.ee.on("clicky-light-on", window.lightOn);
+      return pane;
+    },
+    "parent": 'component_huds',
+    "name": 'HUD Grid'
+  };
+  _BLUEPRINTS.COMPONENTS.hud_clicky_grid_viewport = {
+    "getElement": function (options) {
+      if (!options) {
+        options = {};
+      }
+      const w = 1000;
+      const h = 1000;
+      const pane = new UIContainer();
+      const clickyGrid = game.render.component("hud_clicky_grid");
+      const viewport = new ABE.Viewport({
+        screenWidth: w - 50,
+        screenHeight: h - 50,
+        worldWidth: clickyGrid.width,
+        worldHeight: clickyGrid.height,
+        interaction: game.render.pixi.renderer.plugins.interaction
+      }).drag().clampZoom({
+        minWidth: 10,
+        minHeight: 10,
+        maxWidth: 2000,
+        maxHeight: 2000
+      });
+      viewport.addChild(clickyGrid);
+      pane.addChild(viewport);
+      return viewport;
+    },
+    "parent": 'component_huds',
+    "name": 'HUD Grid Viewport'
+  };
+  _BLUEPRINTS.COMPONENTS.hud_clicky_redbar = {
+    "getElement": function (options) {
+      if (!options) {
+        options = {};
+      }
+      const padding = 20;
+      const pane = new UIContainer();
+      const bg = game.render.component("drawBoxPane", {
+        w: 72
+      });
+      const red = new UIPane({
+        fill: 0xf00000,
+        w: bg.width - padding * 2,
+        h: bg.height - padding * 2
+      });
+      red.x = padding;
+      red.y = padding;
+      pane.addChild(bg);
+      pane.addChild(red);
+      red.pivot.set(1);
+      const redHeight = red.height;
+      pane.setValue = function (value) {
+        const percentile = redHeight / 100;
+        red.height = percentile * value;
+        const moveY = redHeight - red.height;
+        red.y = padding + moveY;
+      };
+      pane.setValue(100);
+      return pane;
+    },
+    "parent": 'component_huds',
+    "name": 'HUD Clicky Redbar'
   };
   _BLUEPRINTS.COMPONENTS.hud_counter = {
     "options": '\'ref, value, max, min, w\'',
@@ -13655,17 +13867,16 @@
         options = {};
       }
       const usePeer = game.urlVar('usePeer') || false;
-      const dblow = game.urlVar('dblow') || -35;
+      let dblow = -35;
+      if (game.urlVar('dblow')) {
+        dblow = 0 - parseInt(game.urlVar('dblow'));
+      }
       options.w = options.w || 300;
       options.h = options.h || 200;
       const holder = new UIContainer();
       const pane = new UIContainer();
       holder.addChild(pane);
-      const white = new UIPane({
-        w: 100,
-        h: 100,
-        fill: 0xffffff
-      });
+      const white = new UIContainer();
       holder.addChild(white);
       white.x = -20;
       let mouth = new ABE.AnimatedSprite("anim_sprite_talk", {
@@ -13714,13 +13925,19 @@
       let analyser;
       let dataArray;
       let isListening = false;
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        const items = devices.filter(device => device.kind === 'audioinput').map(device => device.label || `Microphone ${inputDeviceSelect.items.length + 1}`);
+        inputDeviceSelect.items = items;
+      });
       function startListening() {
         if (!pane.alpha) return;
         if (isListening) return;
         const selectedDeviceId = inputDeviceSelect.selected;
         const constraints = {
           audio: {
-            deviceId: undefined
+            deviceId: selectedDeviceId ? {
+              exact: selectedDeviceId
+            } : undefined
           }
         };
         navigator.mediaDevices.getUserMedia(constraints).then(stream => {
@@ -13799,6 +14016,8 @@
           peer.on('call', call => {
             call.answer(stream);
             call.on('stream', remoteStream => {
+              const remoteVideo = document.getElementById('remoteVideo');
+              remoteVideo.srcObject = remoteStream;
               monitorRemoteAudio(remoteStream);
             });
           });
@@ -13812,5 +14031,115 @@
     },
     "parent": 'component_composites',
     "name": 'Mouth Animator'
+  };
+  _BLUEPRINTS.COMPONENTS.composite_clicky_block = {
+    "options": '\'loadFile, type=new|load, slot\'',
+    "getElement": function (options) {
+      if (!options) {
+        options = {
+          top: 1,
+          left: 1,
+          base: "clicky_1",
+          mid: "composite_clicker_1",
+          over: "clicky_1_top"
+        };
+      }
+      const pane = new UIContainer();
+      pane.top = options.top;
+      pane.left = options.left;
+      pane.state = "active";
+      pane.timer = options.timer || 15;
+      pane.maxTimer = pane.timer;
+      pane.reset = function () {
+        pane.maxTimer = pane.maxTimer - 0.5;
+        this.timer = pane.maxTimer;
+      };
+      const bottom = new Sprite(options.base);
+      const top = new Sprite(options.over);
+      pane.addChild(bottom);
+      if (_BLUEPRINTS.SPRITES[options.mid]) {
+        pane.addChild(new Sprite(options.mid));
+      } else {
+        pane.addChild(game.render.component(options.mid, {
+          parent: pane
+        }));
+      }
+      pane.addChild(top);
+      const lightGreen = new Sprite('btn_circle');
+      lightGreen.scale.set(0.3);
+      lightGreen.x = 5;
+      lightGreen.y = 5;
+      lightGreen.tint = 0x00ff00;
+      pane.addChild(lightGreen);
+      lightGreen.visible = true;
+      const lightRed = new Sprite('btn_circle');
+      lightRed.scale.set(0.3);
+      lightRed.x = 5;
+      lightRed.y = 5;
+      lightRed.tint = 0xff0000;
+      pane.addChild(lightRed);
+      lightRed.visible = false;
+      pane.onTick(function () {
+        if (!pane.visible) return;
+        const delta = 1 - game.tickDelta;
+        if (this.timer > 0) {
+          this.timer = this.timer - 1 / 60 * delta;
+        }
+        if (this.timer < 0) {
+          this.timer = 0;
+        }
+        if (!lightRed.visible) {
+          if (this.timer === 0) {
+            game.ee.emit("clicky-light-off");
+            lightRed.visible = true;
+            lightGreen.visible = false;
+          }
+        }
+        if (!lightGreen.visible) {
+          if (this.timer > 0) {
+            game.ee.emit("clicky-light-on");
+            lightGreen.visible = true;
+            lightRed.visible = false;
+          }
+        }
+      });
+      return pane;
+    },
+    "parent": 'component_composites',
+    "name": 'Clicky Block'
+  };
+  _BLUEPRINTS.COMPONENTS.composite_clicker_1 = {
+    "options": '\'loadFile, type=new|load, slot\'',
+    "getElement": function (options) {
+      if (!options) {
+        options = {};
+      }
+      const parent = options.parent || {
+        timer: 100,
+        maxTimer: 100,
+        reset: function () {
+          this.timer = 100;
+        }
+      };
+      const pane = new UIContainer();
+      const mid = new Sprite('clicky_1_middle');
+      pane.addChild(mid);
+      const distance = 20;
+      const maxTimer = parent.maxTimer;
+      mid.y = distance;
+      pane.enableEvents();
+      pane.on('pointerdown', () => {
+        if (parent.timer !== 0) return;
+        parent.reset();
+      });
+      pane.onTick(() => {
+        if (parent.timer < 0) parent.timer = 0;
+        const offset = parent.timer / maxTimer;
+        mid.y = distance * offset;
+      });
+      return pane;
+    },
+    "parent": 'component_composites',
+    "name": 'Clicker_1'
   };
 })();

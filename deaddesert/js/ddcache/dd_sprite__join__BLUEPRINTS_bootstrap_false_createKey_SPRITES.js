@@ -3166,6 +3166,33 @@
     "parent": 'sprite_bodies',
     "name": 'Office Shirt'
   };
+  _BLUEPRINTS.SPRITES.body_cape_and_waist = {
+    "tileset": 'sheet_humanoid2',
+    "across": 1,
+    "down": 11,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodies',
+    "name": 'Cape and Waistcoat'
+  };
+  _BLUEPRINTS.SPRITES.body_redmage = {
+    "tileset": 'sheet_humanoid2',
+    "across": 3,
+    "down": 11,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodies',
+    "name": 'Red Mage'
+  };
+  _BLUEPRINTS.SPRITES.body_magician = {
+    "tileset": 'sheet_humanoid3',
+    "across": 15,
+    "down": 5,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodies',
+    "name": 'Body Magician'
+  };
   _BLUEPRINTS.SPRITES.body_nakedright = {
     "tileset": 'sheet_humanoid',
     "across": 9,
@@ -4003,6 +4030,42 @@
     "parent": 'sprite_bodiesright',
     "name": 'body_officeright'
   };
+  _BLUEPRINTS.SPRITES.body_cape_and_waistright = {
+    "tileset": 'sheet_humanoid2',
+    "across": 1,
+    "down": 13,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesright',
+    "name": 'body_cape_and_waistright'
+  };
+  _BLUEPRINTS.SPRITES.body_redmageright = {
+    "tileset": 'sheet_humanoid2',
+    "across": 3,
+    "down": 13,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesright',
+    "name": 'body_redmageright'
+  };
+  _BLUEPRINTS.SPRITES.body_magicianright = {
+    "tileset": 'sheet_humanoid3',
+    "across": 15,
+    "down": 7,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesright',
+    "name": 'body_magicianright'
+  };
+  _BLUEPRINTS.SPRITES.clicky_1right = {
+    "tileset": 'sheet_clickyclacky',
+    "across": 1,
+    "down": 3,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesright',
+    "name": 'clicky_1right'
+  };
   _BLUEPRINTS.SPRITES.body_medicalup = {
     "tileset": 'sheet_humanoid',
     "across": 1,
@@ -4831,6 +4894,33 @@
     "parent": 'sprite_bodiesup',
     "name": 'body_officeup'
   };
+  _BLUEPRINTS.SPRITES.body_cape_and_waistup = {
+    "tileset": 'sheet_humanoid2',
+    "across": 1,
+    "down": 15,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesup',
+    "name": 'body_cape_and_waistup'
+  };
+  _BLUEPRINTS.SPRITES.body_redmageup = {
+    "tileset": 'sheet_humanoid2',
+    "across": 3,
+    "down": 15,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesup',
+    "name": 'body_redmageup'
+  };
+  _BLUEPRINTS.SPRITES.body_magicianup = {
+    "tileset": 'sheet_humanoid3',
+    "across": 15,
+    "down": 9,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_bodiesup',
+    "name": 'body_magicianup'
+  };
   _BLUEPRINTS.SPRITES.mask_thejester = {
     "tileset": 'sheet_humanoid',
     "across": 1,
@@ -5218,6 +5308,42 @@
     "parent": 'sprite_masks',
     "name": 'Sharpshooter Mask'
   };
+  _BLUEPRINTS.SPRITES.mask_gambler = {
+    "tileset": 'sheet_humanoid2',
+    "across": 5,
+    "down": 11,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masks',
+    "name": 'Gambler Mask'
+  };
+  _BLUEPRINTS.SPRITES.mask_purp = {
+    "tileset": 'sheet_humanoid2',
+    "across": 9,
+    "down": 11,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masks',
+    "name": 'Eye of Purp'
+  };
+  _BLUEPRINTS.SPRITES.mask_hat_magician = {
+    "tileset": 'sheet_humanoid3',
+    "across": 17,
+    "down": 5,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masks',
+    "name": 'Magician Hat'
+  };
+  _BLUEPRINTS.SPRITES.head_standard = {
+    "tileset": 'sheet_humanoid2',
+    "across": 11,
+    "down": 11,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masks',
+    "name": 'Standard Head'
+  };
   _BLUEPRINTS.SPRITES.mask_thejesterright = {
     "tileset": 'sheet_humanoid',
     "across": 7,
@@ -5577,6 +5703,33 @@
     "h": 128,
     "parent": 'sprite_masksright',
     "name": 'sprite_sharpshooter_maskright'
+  };
+  _BLUEPRINTS.SPRITES.mask_gamblerright = {
+    "tileset": 'sheet_humanoid2',
+    "across": 5,
+    "down": 13,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masksright',
+    "name": 'mask_gamblerright'
+  };
+  _BLUEPRINTS.SPRITES.mask_hat_magicianright = {
+    "tileset": 'sheet_humanoid3',
+    "across": 17,
+    "down": 7,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masksright',
+    "name": 'mask_hat_magicianright'
+  };
+  _BLUEPRINTS.SPRITES.head_standardright = {
+    "tileset": 'sheet_humanoid2',
+    "across": 11,
+    "down": 13,
+    "w": 128,
+    "h": 128,
+    "parent": 'sprite_masksright',
+    "name": 'head_standardright'
   };
   _BLUEPRINTS.SPRITES.container_2_light = {
     "tileset": 'sheet_effects',
@@ -8930,5 +9083,32 @@
     "h": 128,
     "parent": 'sprite_lilanim',
     "name": 'Talk Mmm'
+  };
+  _BLUEPRINTS.SPRITES.clicky_1_top = {
+    "tileset": 'sheet_clickyclacky',
+    "across": 1,
+    "down": 1,
+    "w": 100,
+    "h": 100,
+    "parent": 'sprite_clicky',
+    "name": 'Clicky_1'
+  };
+  _BLUEPRINTS.SPRITES.clicky_1_middle = {
+    "tileset": 'sheet_clickyclacky',
+    "across": 1,
+    "down": 100,
+    "w": 100,
+    "h": 100,
+    "parent": 'sprite_clicky',
+    "name": 'Clicky_1_mid'
+  };
+  _BLUEPRINTS.SPRITES.clicky_1 = {
+    "tileset": 'sheet_clickyclacky',
+    "across": 1,
+    "down": 200,
+    "w": 100,
+    "h": 100,
+    "parent": 'sprite_clicky',
+    "name": 'Clicky_1'
   };
 })();
